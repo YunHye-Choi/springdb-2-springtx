@@ -128,4 +128,22 @@ class MemberServiceTest {
         assertTrue(logRepository.find(username).isEmpty());
     }
 
+    /**
+     * memberService    @Transactional: ON
+     * memberRepository @Transactional: ON
+     * logRepository    @Transactional: ON(REQUIRES_NEW) -> RuntimeException
+     */
+    @Test
+    void recoverException_success() {
+        // given
+        String username = "로그예외_recoverException_success";
+
+        // when UnexpectedRollbackException 발생
+        memberService.joinV2(username);
+
+        // then catch로 처리해줬고, REQUIRES_NEW 를 사용했으므로 트랜잭선 전파가 일어나지 않아서 log만 롤백된다
+        assertTrue(memberRepository.find(username).isPresent());
+        assertTrue(logRepository.find(username).isEmpty());
+    }
+
 }

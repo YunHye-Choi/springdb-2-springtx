@@ -34,7 +34,7 @@ public class MemberService {
      */
     @Transactional
     public void joinV2(String username) {
-        Member member = new Member();
+        Member member = new Member(username);
         Log logMessage = new Log(username);
 
         log.info("== memberRepository 호출 시작 ==");
